@@ -3,7 +3,7 @@
   <div class="col-8 offset-2">
     <h3>Edit your Listing</h3>
     <br/>
-    <form method="POST" action="/listings/<%=listing._id %>?_method=PUT">
+    <form method="POST" action="/listings/<%=listing._id %>?_method=PUT" novalidate class="needs-validation">
       <div class="mb-3">
         <label for="title" class="form-label">Title</label>
         <input
@@ -11,7 +11,9 @@
           value="<%= listing.title %>"
           type="text"
           class="form-control"
+          required
         />
+        <div class="invalid-feedback">Please Enter Valid Price</div>
       </div>
 
       <div class="mb-3">
@@ -20,7 +22,10 @@
           name="listing[description]"
           class="form-control"
           value="<%=listing.description%>"
-        ></textarea>
+          required
+        >
+      </textarea>
+      <div class="invalid-feedback">Please Enter sort Description</div>
       </div>
       <div class="mb-3">
         <label for="image" class="form-label">Image Link</label>
@@ -29,7 +34,9 @@
           value="<%= listing.image.url %>"
           type="text"
           class="form-control"
+          required
         />
+        <div class="invalid-feedback">Please Enter the Valid Link</div>
       </div>
       <div class="row">
         <div class="mb-3 col-md-4">
@@ -39,7 +46,9 @@
             value="<%= listing.price %>"
             type="number"
             class="form-control"
+            required
           />
+          <div class="invalid-feedback">Please Enter Valid Price</div>
         </div>
         <div class="mb-3 col-md-4">
           <label for="country" class="form-label">Country</label>
@@ -48,7 +57,9 @@
             value="<%= listing.country %>"
             type="text"
             class="form-control"
+            required
           />
+          <div class="invalid-feedback">Country should be Valid</div>
         </div>
       </div>
       <div class="mb-3">
@@ -58,10 +69,13 @@
           value="<%= listing.location %>"
           type="text"
           class="form-control"
+          required
         />
+        <div class="invalid-feedback">Please Enter the Valid Location</div>
       </div>
       <br>
       <button class="btn btn-dark edit-btn mt-3">Edit</button>
     </form>
   </div>
 </div>
+<script src="/js/script.js"></script>

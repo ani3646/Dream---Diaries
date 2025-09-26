@@ -5,6 +5,10 @@ const Listing = require("./models/listing.js");
 const path = require("path");
 const methodOverride = require("method-override");
 const ejsMate = require("ejs-mate");
+// const wrapAsync = require("./utils/wrapAsync.js");
+//  const ExpressError = require("./utils/ExpressError.js");
+const { listingSchema } = require("./schema.js");
+
 
 
 //Data Base Function
@@ -31,9 +35,21 @@ app.use(express.static(path.join(__dirname,"/public")));
 app.use(express.static('public'));
 
 
-app.get("/", (re1,res) => {
-    res.send("Server is Working Perfectly ")
+app.get("/", (req,res) => {
+    res.send("Server is Working Perfectly ");
 });
+
+const validatelisting = (req, res , next) => {
+     let {error} = listingSchema.validate(req.body);
+        
+        
+        // if(error) {
+        //     let errMsg = error.details.map((el) => el.message).join(",");
+        //     throw new (400, error);
+        // }else {
+        //     next();
+        // }
+}
 
 //Index Route
 app.get("/listings", async(req, res) =>{
@@ -55,11 +71,15 @@ app.get("/listings/:id", async (req,  res) =>{
 });
 
 //Create Route
-app.post("/listings", async(req, res) =>{
-    const newListing = new Listing(req.body.listing);
-    await newListing.save();
-    res.redirect("/listings");
-});
+app.post(
+    "/listings",validatelisting ,
+    async(req, res, next) => {
+        const newListing = new Listing(req.body.listing);
+        await newListing.save();
+        res.redirect("/listings");
+    
+    
+}); 
 
 //Edit Route
 app.get("/listings/:id/edit", async(req,res) => {
@@ -69,7 +89,9 @@ app.get("/listings/:id/edit", async(req,res) => {
 });
 
 //Update Route
-app.put("/listings/:id", async(req,res) => {
+app.put("/listings/:id",
+    validatelisting,
+    async(req,res) => {
     let {id} = req.params;
     await Listing.findByIdAndUpdate(id, {...req.body.listing});
     res.redirect(`/listings/${id}`);
@@ -96,6 +118,22 @@ app.delete("/listings/:id", async (req, res) => {
 //     console.log("Sample was saved");
 //     res.send("Successfull");
 // });
+
+
+
+//////////////////// it is for the all route errors and the express for also ////////////////
+
+
+// app.all("*", (req, res, next) => {
+//     next(new ExpressError(404, "Page Not Found!"));
+// });
+
+// app.use((err, req, res, next) => {
+//   const { statusCode = 500 } = err;
+//   if (!err.message) err.message = "Oh No, Something Went Wrong!";
+//   res.status(statusCode).send(err.message);
+// });
+
 
 app.listen(8080, () =>{
     console.log("Server is listening Port ");

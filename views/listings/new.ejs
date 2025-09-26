@@ -4,7 +4,7 @@
 <br /><br />
 <h3>Create a New Listing</h3>
 <br />
-<form method="POST" action="/listings">
+<form method="POST" action="/listings" novalidate class="needs-validation">
   <div class="mb-3">
     <label for="title" class="form-label">Title</label>
     <input
@@ -12,14 +12,18 @@
       placeholder="Add Title"
       type="text"
       class="form-control"
+      required
     />
+    <div class="invalid-feedback">Title  should be Valid</div>
   </div>
   <div class="mb-3">
     <label for="description" class="form-label">Description</label>
     <textarea
       name="listing[description]"
       class="form-control"
+      required
     ></textarea>
+    <div class="invalid-feedback">Please Enter sort Description</div>
   </div>
   <div class="mb-3">
     <label for="image" class="form-label" >Image Link</label>
@@ -28,17 +32,20 @@
   <div class="row">
  <div class="mb-3 col-md-4"> 
      <label for="price" class="form-label">Price</label>
-     <input name="listing[price]" placeholder="00000" type="number" class="form-control"/>
+     <input name="listing[price]" placeholder="00000"  class="form-control" required/>
+      <div class="invalid-feedback">Please Enter Valid Price</div>
  </div>
   <div class="mb-3 col-md-8">
     <label for="country" class="form-label">Country</label>
-    <input name="listing[country]" placeholder="India" type="text" class="form-control" />
+    <input name="listing[country]" placeholder="India" type="text" class="form-control" required />
+    <div class="invalid-feedback">Please Enter The Country Name</div>
   </div>
   </div>
   
   <div class="mb-3"> 
     <label for="location" class="form-label">Location</label>
-    <input name="listing[location]" placeholder="Mumbai" type="text" class="form-control" />
+    <input name="listing[location]" placeholder="Mumbai" type="text" class="form-control" required/>
+    <div class="invalid-feedback">Please Enter the Location</div>
   </div>
   <br />
   <button class="btn btn-dark add-btn mt-3">Add</button>
