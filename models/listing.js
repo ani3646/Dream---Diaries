@@ -18,19 +18,15 @@ const ListingSchema = new Schema({
         "https://images.unsplash.com/photo-1590523278191-995cbcda646b?ixlib=rb-1.2.1&auto=format&fit=crop&w=1080&q=80",
     },
   },
-  price: {
-    type: Number,
-    required: true,
-    min: [0, "Price cannot be negative"],
-  },
-  location: {
-    type: String,
-    default: "Unknown location",
-  },
-  country: {
-    type: String,
-    default: "Unknown country",
-  },
+  price: Number,
+  location: String,
+  country: String,
+  reviews: [
+    {
+      type: Schema.Types.ObjectId,
+      ref:"Review",
+    }
+  ]
 });
 
 const Listing = mongoose.model("Listing", ListingSchema);

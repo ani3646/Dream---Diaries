@@ -72,18 +72,23 @@ app.get("/listings/:id", async (req,  res) =>{
 
 //Create Route
 app.post(
-    "/listings",validatelisting ,
-    async(req, res, next) => {
-        const newListing = new Listing(req.body.listing);
-        await newListing.save();
-        res.redirect("/listings");
+    "/listings",
+    async(req, res) => {
+         try {
+    const newListing = new Listing(req.body.listing);
+    await newListing.save();
+    res.redirect(`/listings/${newListing._id}`);
+  } catch (e) {
+    console.error("Error saving listing:", e);
+    res.status(500).send("Unable to create listing");
+  }
     
     
 }); 
 
 //Edit Route
 app.get("/listings/:id/edit", async(req,res) => {
-    let {id} = req.params;
+    const {id} = req.params;
     const listing = await Listing.findById(id);
     res.render("listings/edit.ejs", {listing});
 });
