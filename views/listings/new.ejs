@@ -3,36 +3,109 @@
 <div class="container mt-4">
   <h3>Create a New Listing</h3>
 
-  <form action="/listings" method="POST">
+  <form action="/listings" method="POST" enctype="multipart/form-data">
     <div class="mb-3">
       <label for="title" class="form-label">Title</label>
-      <input type="text" class="form-control" id="title" name="listing[title]" required>
+      <input
+        type="text"
+        class="form-control"
+        id="title"
+        name="listing[title]"
+        required
+      />
     </div>
 
     <div class="mb-3">
       <label for="description" class="form-label">Description</label>
-      <textarea class="form-control" id="description" name="listing[description]" required></textarea>
+      <textarea
+        class="form-control"
+        id="description"
+        name="listing[description]"
+        required
+      ></textarea>
     </div>
 
+    <!-- <div class="mb-3">
+      <label 
+      for="image" class="form-label">Image Link</label>
+      <input type="text" 
+      class="form-control" 
+      id="image" 
+      name="listing[image][url]"
+       required>
+    </div> -->
+
     <div class="mb-3">
-      <label for="image" class="form-label">Image Link</label>
-      <input type="text" class="form-control" id="image" name="listing[image][url]" required>
+      <label for="image" class="form-label">Upload Image</label>
+
+      <input
+type="file"
+class="form-control"
+id="image"
+name="listing[images]"
+multiple
+accept="image/*"
+required
+>
     </div>
 
     <div class="mb-3">
       <label for="price" class="form-label">Price</label>
-      <input type="number" class="form-control" id="price" name="listing[price]" required>
+      <input
+        type="number"
+        class="form-control"
+        id="price"
+        name="listing[price]"
+        required
+      />
     </div>
 
     <div class="mb-3">
       <label for="location" class="form-label">Location</label>
-      <input type="text" class="form-control" id="location" name="listing[location]" required>
+      <input
+        type="text"
+        class="form-control"
+        id="location"
+        name="listing[location]"
+        required
+      />
     </div>
 
     <div class="mb-3">
       <label for="country" class="form-label">Country</label>
-      <input type="text" class="form-control" id="country" name="listing[country]" required>
+      <input
+        type="text"
+        class="form-control"
+        id="country"
+        name="listing[country]"
+        required
+      />
     </div>
+
+    <div class="mb-3">
+    <label class="form-label">Category</label>
+
+    <select
+        class="form-select"
+        name="listing[category]"
+        required>
+
+        <option value="Beach">🏖 Beach</option>
+        <option value="Mountain">⛰ Mountain</option>
+        <option value="Camping">🏕 Camping</option>
+        <option value="Castle">🏰 Castle</option>
+        <option value="Forest">🌳 Forest</option>
+        <option value="Island">🏝 Island</option>
+        <option value="Pool">🏊 Pool</option>
+        <option value="Farm">🚜 Farm</option>
+        <option value="Arctic">❄ Arctic</option>
+        <option value="Desert">🏜 Desert</option>
+
+    </select>
+</div>
+
+
+
 
     <button type="submit" class="btn btn-danger">Add</button>
   </form>

@@ -1,0 +1,169 @@
+/* ===========================
+        SHOW PAGE
+===========================*/
+
+.show-container{
+    max-width:1350px;
+    margin:auto;
+    padding-bottom:60px;
+}
+
+/* ---------------- Gallery ---------------- */
+
+.gallery-grid{
+    display:grid;
+    grid-template-columns:2fr 1fr;
+    gap:12px;
+    margin:25px 0 40px;
+}
+
+.gallery-main{
+    position:relative;
+    overflow:hidden;
+    border-radius:22px;
+}
+
+.gallery-main img{
+    width:100%;
+    height:540px;
+    object-fit:cover;
+    transition:.4s;
+}
+
+.gallery-main:hover img{
+    transform:scale(1.02);
+}
+
+.gallery-right{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+}
+
+.side-thumb{
+    width:100%;
+    height:264px;
+    object-fit:cover;
+    border-radius:18px;
+    transition:.3s;
+}
+
+.side-thumb:hover{
+    transform:scale(1.03);
+}
+
+.show-photo-btn{
+    border-radius:30px;
+}
+
+/* ---------------- Cards ---------------- */
+
+.show-container .card{
+    border:none;
+    border-radius:22px;
+    overflow:hidden;
+    box-shadow:0 8px 25px rgba(0,0,0,.08);
+}
+
+.show-container .card-body{
+    padding:30px !important;
+}
+
+/* ---------------- Booking ---------------- */
+
+.booking-card{
+    position:sticky;
+    top:110px;
+}
+
+/* ---------------- Map ---------------- */
+
+#map{
+    width:100%;
+    height:420px;
+    border-radius:20px;
+}
+
+/* ---------------- Amenities ---------------- */
+
+.fa-wifi,
+.fa-utensils,
+.fa-car,
+.fa-tv,
+.fa-users,
+.fa-bed,
+.fa-bath{
+    color:#ff385c;
+}
+
+/* ---------------- Host ---------------- */
+
+.host-img{
+    width:70px;
+    height:70px;
+    border-radius:50%;
+    object-fit:cover;
+}
+
+/* ---------------- Reviews ---------------- */
+
+.review-card{
+    transition:.3s;
+}
+
+.review-card:hover{
+    transform:translateY(-6px);
+}
+
+/* ---------------- Buttons ---------------- */
+
+.btn-danger{
+    border-radius:12px;
+}
+
+.btn-outline-danger{
+    border-radius:12px;
+}
+
+/* ---------------- Mobile ---------------- */
+
+@media(max-width:991px){
+
+.gallery-grid{
+    grid-template-columns:1fr;
+}
+
+.gallery-main img{
+    height:350px;
+}
+
+.gallery-right{
+    grid-template-columns:repeat(2,1fr);
+}
+
+.side-thumb{
+    height:180px;
+}
+
+.booking-card{
+    position:static;
+    margin-top:30px;
+}
+
+}
+
+@media(max-width:576px){
+
+.gallery-right{
+    grid-template-columns:1fr 1fr;
+}
+
+.side-thumb{
+    height:130px;
+}
+
+.gallery-main img{
+    height:260px;
+}
+
+}

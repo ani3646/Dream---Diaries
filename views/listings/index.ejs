@@ -1,34 +1,440 @@
 <% layout("/layouts/boilerplate") -%>
-<body>
-    <h3>All Listings</h3>
-    <!-- <form method="GET" action="/listings/new">
-        <button>Create New Listings</button>
-    </form> -->
-    <div class="row row-cols-lg-3 row-cols-md-3 row-cols-sm-1">
-         <% for (let listing of allListings) { %> 
-          <a href="/listings/<%= listing._id %>" class="listing-link">
-            <div class="card  col" style="width: 20rem;">
-            <img
-                src="<%= listing.image.url %>" 
-                class="card-img-top" alt="listing_image"
-                style="height: 20rem" 
-            />
-            <div class="card-img-overlay">Destination</div>
-            <div class="card-body">
-              <p class="card-text">
-                <b><%= listing.title %></b><br>
-                &#8377;<%= Number(listing.price || 0).toLocaleString("en-IN") %>/Night
 
-              </p>
-            </div>  
-          </div>
-          </a>
-          <% } %>
-         
+<!-- HERO SECTION -->
+
+<section class="hero-section">
+
+    <div class="hero-overlay">
+
+        <div class="hero-content">
+
+            <h1>
+                Find your next
+                <span>Dream Destination</span>
+            </h1>
+
+            <p>
+                Discover beautiful villas, hotels, resorts and unique stays
+                around the world.
+            </p>
+
+            <form
+                action="/listings"
+                method="GET"
+                class="hero-search">
+
+                <input
+                    type="text"
+                    name="search"
+                    placeholder="Search destinations...">
+
+                <button>
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </button>
+
+            </form>
+
         </div>
-      
-    
 
-   
-</body>
-</html>
+    </div>
+
+</section>
+
+<!-- Popular Destinations -->
+
+<section class="popular-section">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div>
+
+            <h2 class="fw-bold">🔥 Popular Destinations</h2>
+
+            <p class="text-muted">
+                Handpicked places loved by travellers.
+            </p>
+
+        </div>
+
+        <a href="/listings" class="btn btn-outline-dark rounded-pill">
+            View All
+        </a>
+
+    </div>
+
+    <div class="row g-4">
+
+        <div class="col-lg-3 col-md-6">
+
+            <div class="destination-card">
+
+                <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800" alt="Goa">
+
+                <div class="destination-overlay">
+
+                    <h4>Goa</h4>
+
+                    <span>120+ Stays</span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-lg-3 col-md-6">
+
+            <div class="destination-card">
+
+                <img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=800" alt="Manali">
+
+                <div class="destination-overlay">
+
+                    <h4>Manali</h4>
+
+                    <span>80+ Stays</span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-lg-3 col-md-6">
+
+            <div class="destination-card">
+
+                <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=800" alt="Bali">
+
+                <div class="destination-overlay">
+
+                    <h4>Bali</h4>
+
+                    <span>95+ Stays</span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-lg-3 col-md-6">
+
+            <div class="destination-card">
+
+                <img src="https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=800" alt="Swiss Alps">
+
+                <div class="destination-overlay">
+
+                    <h4>Swiss Alps</h4>
+
+                    <span>60+ Stays</span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<section class="mt-5">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div>
+
+            <h2 class="fw-bold">
+                ⭐ Featured Stays
+            </h2>
+
+            <p class="text-muted">
+                Premium stays selected by DreamDiaries.
+            </p>
+
+        </div>
+
+    </div>
+
+    <div class="row">
+
+        <% featuredListings.forEach(listing=>{ %>
+
+            <div class="col-lg-3 col-md-6 mb-4">
+
+                <a
+                    href="/listings/<%= listing._id %>"
+                    class="listing-link">
+
+                    <div class="card listing-card h-100">
+
+    <div class="image-wrapper">
+
+        <img
+            src="<%= listing.image.url %>"
+            class="card-img-top"
+            alt="<%= listing.title %>">
+
+        <div class="image-overlay">
+
+            <div class="top-badges">
+
+                <span class="listing-badge">
+                    Featured
+                </span>
+
+                <button class="wishlist-btn">
+
+                    <i class="fa-regular fa-heart"></i>
+
+                </button>
+
+            </div>
+
+        </div>
+
+        <div class="image-gradient"></div>
+
+    </div>
+
+    <div class="card-body">
+
+        <div class="d-flex justify-content-between align-items-start">
+
+            <div>
+
+                <h5 class="listing-title mb-1">
+                    <%= listing.title %>
+                </h5>
+
+                <p class="listing-location mb-2">
+
+                    <i class="fa-solid fa-location-dot"></i>
+
+                    <%= listing.location %>, <%= listing.country %>
+
+                </p>
+
+            </div>
+
+            <div class="rating-box">
+
+                ⭐ 4.9
+
+                <small>(Featured)</small>
+
+            </div>
+
+        </div>
+
+        <div class="listing-price">
+
+            ₹<%= listing.price.toLocaleString("en-IN") %>
+
+            <span>/ night</span>
+
+        </div>
+
+    </div>
+
+</div>
+
+                </a>
+
+            </div>
+
+        <% }) %>
+
+    </div>
+
+</section>
+
+
+
+<section class="mt-5">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div>
+
+            <h2 class="fw-bold">
+                🏆 Top Rated Stays
+            </h2>
+
+            <p class="text-muted">
+                Highest rated stays by our guests.
+            </p>
+
+        </div>
+
+    </div>
+
+    <div class="row">
+
+        <% topRated.forEach(listing => { %>
+
+        <div class="col-lg-3 col-md-6 mb-4">
+
+            <a href="/listings/<%= listing._id %>" class="listing-link">
+
+                <div class="card listing-card h-100">
+
+                    <div class="image-wrapper">
+
+                        <img
+                            src="<%= listing.image.url %>"
+                            class="card-img-top"
+                            alt="<%= listing.title %>">
+
+                        <div class="image-gradient"></div>
+
+                    </div>
+
+                    <div class="card-body">
+
+                        <h5 class="listing-title">
+                            <%= listing.title %>
+                        </h5>
+
+                        <p class="listing-location">
+
+                            <i class="fa-solid fa-location-dot"></i>
+
+                            <%= listing.location %>,
+                            <%= listing.country %>
+
+                        </p>
+
+                        <div class="d-flex justify-content-between align-items-center">
+
+                            <span class="fw-bold text-danger">
+                                ₹<%= listing.price.toLocaleString("en-IN") %>/night
+                            </span>
+
+                            <span class="badge bg-warning text-dark">
+                                ⭐ <%= listing.avgRating %>
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </a>
+
+        </div>
+
+        <% }) %>
+
+    </div>
+
+</section>
+
+<h3>All Listings</h3>
+
+<% if(allListings.length === 0){ %>
+
+    <div class="alert alert-warning mt-4">
+        No listings found.
+    </div>
+
+<% } %>
+
+<div class="row">
+
+    <% for(let listing of allListings){ %>
+
+    <div class="col-lg-4 col-md-6 col-sm-12 mb-4">
+
+        <a href="/listings/<%= listing._id %>" class="listing-link">
+
+            <div class="card listing-card h-100">
+
+    <div class="image-wrapper">
+
+        <img
+            src="<%= listing.image.url %>"
+            class="card-img-top"
+            alt="listing_image">
+
+        
+        <div class="image-overlay">
+
+    <div class="top-badges">
+
+        <span class="listing-badge">
+            Guest Favorite
+        </span>
+
+        <button class="wishlist-btn">
+
+            <i class="fa-regular fa-heart"></i>
+
+        </button>
+
+    </div>
+
+</div>
+
+<div class="image-gradient"></div>
+
+
+    </div>
+
+
+
+    <div class="card-body">
+
+    <div class="d-flex justify-content-between align-items-start">
+
+        <div>
+
+            <h5 class="listing-title mb-1">
+                <%= listing.title %>
+            </h5>
+
+            <p class="listing-location mb-2">
+
+                <i class="fa-solid fa-location-dot"></i>
+
+                <%= listing.location %>, <%= listing.country %>
+
+            </p>
+
+        </div>
+
+        <div class="rating-box">
+
+    ⭐ 4.8
+
+    <small>(120)</small>
+
+</div>
+
+
+    </div>
+
+    <div class="listing-price">
+
+        ₹<%= listing.price.toLocaleString("en-IN") %>
+
+        <span>/ night</span>
+
+    </div>
+
+</div>
+
+
+</div>
+
+
+        </a>
+
+    </div>
+
+    <% } %>
+
+</div>

@@ -1,0 +1,166 @@
+<% layout("/layouts/boilerplate") %>
+
+<div class="container py-5">
+
+    <div class="row justify-content-center">
+
+        <div class="col-lg-8">
+
+            <div class="card shadow-lg border-0 rounded-4">
+
+                <div class="card-body text-center p-5">
+
+                    <!-- Profile Image -->
+
+                    <img
+    src="<%= user.profileImage.url %>"
+    class="rounded-circle shadow mb-4"
+    style="width:180px;
+           height:180px;
+           object-fit:cover;
+           border:6px solid white;
+           box-shadow:0 8px 25px rgba(0,0,0,.15);">
+
+                    <!-- Upload Form -->
+
+                    <form
+                        action="/profile/photo"
+                        method="POST"
+                        enctype="multipart/form-data"
+                        class="mb-4">
+
+                        <div class="w-50 mx-auto">
+
+                            <input
+                                type="file"
+                                name="profileImage"
+                                class="form-control"
+                                accept="image/*"
+                                required>
+
+                        </div>
+
+                        <button class="btn btn-dark rounded-pill px-4 mt-3">
+                            <i class="fa-solid fa-upload"></i>
+                            Upload Picture
+                        </button>
+
+                    </form>
+
+                    <a
+    href="/profile/edit"
+    class="btn btn-dark rounded-pill px-4 mb-4">
+
+                        <i class="fa-solid fa-pen"></i>
+                        Edit Profile
+
+                    </a>
+
+                    <!-- Name -->
+
+                    <h2 class="fw-bold mb-1">
+                        <%= user.username %>
+                    </h2>
+
+                    <p class="text-muted mb-4">
+                        <%= user.email %>
+                    </p>
+
+                    <hr>
+
+                    <!-- Details -->
+
+                    <div class="text-start mx-auto" style="max-width:420px;">
+
+                        <p>
+                            📱 <strong>Phone:</strong>
+                            <%= user.phone || "Not Added" %>
+                        </p>
+
+                        <p>
+                            🏙 <strong>City:</strong>
+                            <%= user.city || "Not Added" %>
+                        </p>
+
+                        <p>
+                            🌍 <strong>Country:</strong>
+                            <%= user.country || "Not Added" %>
+                        </p>
+
+                        <p>
+                            📝 <strong>Bio:</strong>
+                            <%= user.bio || "No Bio Yet" %>
+                        </p>
+
+                    </div>
+
+                    <hr class="my-4">
+
+                    <!-- Stats -->
+                    <div class="row text-center g-3">
+
+    <div class="col-md-4">
+
+        <div class="card border-0 shadow-sm rounded-4 p-3">
+
+            <h3 class="text-danger fw-bold">
+                ❤️ <%= user.wishlist.length %>
+            </h3>
+
+            <small class="text-muted">
+                Wishlist
+            </small>
+
+        </div>
+
+    </div>
+
+    <div class="col-md-4">
+
+        <div class="card border-0 shadow-sm rounded-4 p-3">
+
+            <h3 class="text-primary fw-bold">
+                🏠 <%= totalListings %>
+            </h3>
+
+            <small class="text-muted">
+                My Listings
+            </small>
+
+        </div>
+
+    </div>
+
+    <div class="col-md-4">
+
+        <div class="card border-0 shadow-sm rounded-4 p-3">
+
+            <h3 class="text-success fw-bold">
+                📅
+            </h3>
+
+            <small class="text-muted">
+
+                <% if(user.createdAt){ %>
+                    <%= user.createdAt.toDateString() %>
+                <% } else { %>
+                    Recently Joined
+                <% } %>
+
+            </small>
+
+        </div>
+
+    </div>
+
+</div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

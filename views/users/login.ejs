@@ -1,0 +1,39 @@
+<% layout("/layouts/boilerplate") %>
+
+<div class="row mt-4">
+    <div class="col-6 offset-3">
+
+        <h3>Login to Dream Diaries</h3>
+
+        <form action="/login" method="POST">
+
+            <div class="mb-3">
+                <label class="form-label">Username</label>
+
+                <input
+                type="text"
+                class="form-control"
+                name="username"
+                required>
+            </div>
+
+            <div class="mb-3">
+
+                <label class="form-label">Password</label>
+
+                <input
+                type="password"
+                class="form-control"
+                name="password"
+                required>
+
+            </div>
+
+            <button class="btn btn-dark">
+                Login
+            </button>
+
+        </form>
+
+    </div>
+</div>

@@ -1,0 +1,173 @@
+<% layout("/layouts/boilerplate") %>
+
+<div class="container py-5">
+
+    <h2 class="fw-bold mb-4">
+        <%= listing.title %> Bookings
+    </h2>
+
+    <% if(listing.bookings.length === 0){ %>
+
+        <div class="alert alert-info shadow-sm">
+            No bookings yet for this listing.
+        </div>
+
+    <% } else { %>
+
+        <div class="row">
+
+            <% listing.bookings.forEach(booking => { %>
+
+                <div class="col-lg-6 mb-4">
+
+                    <div class="card shadow border-0 rounded-4 h-100">
+
+                        <div class="card-body">
+
+                            <div class="d-flex justify-content-between">
+
+                                <h4 class="fw-bold">
+                                    <%= booking.user.username %>
+                                </h4>
+
+                               <span class="badge
+<%= booking.status === "Confirmed"
+    ? "bg-success"
+    : booking.status === "Cancelled"
+    ? "bg-danger"
+    : "bg-warning text-dark" %>">
+
+    <%= booking.status %>
+
+</span>
+
+                            </div>
+
+                            <p class="text-muted mb-4">
+
+                                <i class="fa-solid fa-envelope"></i>
+
+                                <%= booking.user.email %>
+
+                            </p>
+
+                            <div class="row">
+
+                                <div class="col-6 mb-3">
+
+                                    <strong>Check In</strong>
+
+                                    <p>
+                                        <%= booking.checkIn.toDateString() %>
+                                    </p>
+
+                                </div>
+
+                                <div class="col-6 mb-3">
+
+                                    <strong>Check Out</strong>
+
+                                    <p>
+                                        <%= booking.checkOut.toDateString() %>
+                                    </p>
+
+                                </div>
+
+                                <div class="col-6">
+
+                                    <strong>Guests</strong>
+
+                                    <p>
+                                        <%= booking.guests %>
+                                    </p>
+
+                                </div>
+
+                                <div class="col-6">
+
+                                    <strong>Total Price</strong>
+
+                                    <p class="fw-bold text-danger">
+
+                                        ₹ <%= booking.totalPrice.toLocaleString("en-IN") %>
+
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+                            <hr>
+
+                            <p class="text-muted small mb-3">
+
+    <i class="fa-solid fa-clock"></i>
+
+    Booked on
+    <strong><%= booking.createdAt.toDateString() %></strong>
+
+</p>
+
+    <div class="d-flex gap-2 flex-wrap">
+
+    <a
+        href="/listings/<%= listing._id %>"
+        class="btn btn-outline-dark">
+
+        View Listing
+
+    </a>
+
+    <% if(booking.status === "Pending"){ %>
+
+   <form
+    action="/host/bookings/<%= booking._id %>/accept?_method=PUT"
+    method="POST">
+
+    <button type="submit" class="btn btn-success">
+        Accept
+    </button>
+
+</form>
+
+<form
+    action="/host/bookings/<%= booking._id %>/reject?_method=PUT"
+    method="POST">
+
+    <button type="submit" class="btn btn-danger">
+        Reject
+    </button>
+
+</form>
+
+    <% } else if(booking.status === "Confirmed"){ %>
+
+        <span class="badge bg-success fs-6">
+            Accepted
+        </span>
+
+    <% } else { %>
+
+        <span class="badge bg-danger fs-6">
+            Rejected
+        </span>
+
+    <% } %>
+
+</div>
+        
+
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            <% }) %>
+
+        </div>
+
+    <% } %>
+
+</div>

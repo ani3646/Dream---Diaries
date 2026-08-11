@@ -1,0 +1,390 @@
+<% layout("/layouts/boilerplate") %>
+
+<div class="container py-5">
+
+   <div class="d-flex justify-content-between align-items-center mb-4">
+
+    <div>
+        <h2 class="fw-bold">
+            Welcome, <%= currUser.username %> 👋
+        </h2>
+
+        <p class="text-muted mb-0">
+            Manage your listings and bookings
+        </p>
+    </div>
+
+</div>
+
+    <div class="row">
+
+        <div class="col-md-4">
+    <div class="card p-4 shadow-sm rounded-4 text-center">
+
+        <i class="fa-solid fa-house fs-1 text-danger mb-3"></i>
+
+        <h3><%= listings.length %></h3>
+
+        <p class="text-muted mb-0">Total Listings</p>
+
+    </div>
+</div>
+
+        <div class="col-md-4">
+    <div class="card p-4 shadow-sm rounded-4 text-center">
+
+        <i class="fa-solid fa-calendar-check fs-1 text-primary mb-3"></i>
+
+        <h3><%= totalBookings %></h3>
+
+        <p class="text-muted mb-0">Total Bookings</p>
+
+    </div>
+</div>
+
+        <div class="col-md-4">
+    <div class="card p-4 shadow-sm rounded-4 text-center">
+
+        <i class="fa-solid fa-indian-rupee-sign fs-1 text-success mb-3"></i>
+
+        <h3>₹ <%= totalEarnings.toLocaleString("en-IN") %></h3>
+
+        <p class="text-muted mb-0">Total Earnings</p>
+
+    </div>
+</div>
+
+
+    </div>
+
+
+    <hr class="my-5">
+
+<h3 class="fw-bold mb-4">
+    My Listings
+</h3>
+
+<div class="row">
+
+    <% listings.forEach(listing => { %>
+
+        <div class="col-lg-4 mb-4">
+
+            <div class="card shadow-sm border-0 rounded-4 h-100">
+
+                <img
+                    src="<%= listing.image.url %>"
+                    class="card-img-top"
+                    style="height:220px; object-fit:cover;"
+                >
+
+                <div class="card-body">
+
+                    <h5 class="fw-bold">
+                        <%= listing.title %>
+                    </h5>
+
+                    <p class="text-muted">
+                        <%= listing.location %>,
+                        <%= listing.country %>
+                    </p>
+
+                    <p>
+                        <strong>Bookings:</strong>
+                        <%= listing.bookings.length %>
+                    </p>
+
+                    <a
+                        href="/host/listings/<%= listing._id %>"
+                        class="btn btn-dark w-100">
+
+                        View Bookings
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+ 
+    <% }) %>
+
+</div>
+
+
+
+
+<hr class="my-5">
+
+<h3 class="fw-bold mb-4">
+    Booking Analytics
+</h3>
+
+<div class="row">
+
+    <div class="col-md-4 mb-4">
+
+        <div class="card shadow-sm rounded-4 border-0 p-4 text-center">
+
+            <h2 class="text-warning">
+                <%= pendingBookings %>
+            </h2>
+
+            <p class="mb-0">
+                Pending
+            </p>
+
+        </div>
+
+    </div>
+
+    <div class="col-md-4 mb-4">
+
+        <div class="card shadow-sm rounded-4 border-0 p-4 text-center">
+
+            <h2 class="text-success">
+                <%= confirmedBookings %>
+            </h2>
+
+            <p class="mb-0">
+                Confirmed
+            </p>
+
+        </div>
+
+    </div>
+
+    <div class="col-md-4 mb-4">
+
+        <div class="card shadow-sm rounded-4 border-0 p-4 text-center">
+
+            <h2 class="text-danger">
+                <%= cancelledBookings %>
+            </h2>
+
+            <p class="mb-0">
+                Cancelled
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div class="row mt-4">
+
+    <div class="col-lg-6 mb-4">
+
+        <div class="card shadow-sm rounded-4 p-4">
+
+            <h5 class="fw-bold mb-3">
+                Booking Status
+            </h5>
+
+            <canvas id="bookingChart"></canvas>
+
+        </div>
+
+    </div>
+
+    <div class="col-lg-6 mb-4">
+
+        <div class="card shadow-sm rounded-4 p-4">
+
+            <h5 class="fw-bold mb-3">
+                Dashboard Summary
+            </h5>
+
+            <p>
+                Total Listings:
+                <strong><%= listings.length %></strong>
+            </p>
+
+            <p>
+                Total Bookings:
+                <strong><%= totalBookings %></strong>
+            </p>
+
+            <p>
+                Earnings:
+                <strong>₹ <%= totalEarnings.toLocaleString("en-IN") %></strong>
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<hr class="my-5">
+
+<h3 class="fw-bold mb-4">
+    Recent Bookings
+</h3>
+
+<% if(recentBookings.length === 0){ %>
+
+    <div class="alert alert-info">
+        No bookings yet.
+    </div>
+
+<% } else { %>
+
+<div class="row">
+
+    <% recentBookings.forEach(booking => { %>
+
+    <div class="col-lg-6 mb-4">
+
+        <div class="card shadow-sm border-0 rounded-4">
+
+            <div class="card-body">
+
+                <div class="d-flex justify-content-between">
+
+                    <div>
+
+                        <h5 class="fw-bold">
+                            <%= booking.user.username %>
+                        </h5>
+
+                        <p class="text-muted mb-1">
+
+                            <i class="fa-solid fa-house text-danger"></i>
+
+                            <%= booking.listingTitle %>
+
+                        </p>
+
+                    </div>
+
+                    <span class="badge
+<%= booking.status === "Confirmed"
+    ? "bg-success"
+    : booking.status === "Cancelled"
+    ? "bg-danger"
+    : "bg-warning text-dark" %>">
+
+    <%= booking.status %>
+
+</span>
+
+                </div>
+
+                <hr>
+
+                <div class="row">
+
+                    <div class="col-6">
+
+                        <small class="text-muted">
+                            Check In
+                        </small>
+
+                        <p>
+                            <%= booking.checkIn.toDateString() %>
+                        </p>
+
+                    </div>
+
+                    <div class="col-6">
+
+                        <small class="text-muted">
+                            Check Out
+                        </small>
+
+                        <p>
+                            <%= booking.checkOut.toDateString() %>
+                        </p>
+
+                    </div>
+
+                    <div class="col-6">
+
+                        <small class="text-muted">
+                            Guests
+                        </small>
+
+                        <p>
+                            <%= booking.guests %>
+                        </p>
+
+                    </div>
+
+                    <div class="col-6">
+
+                        <small class="text-muted">
+                            Total Price
+                        </small>
+
+                        <p class="fw-bold text-danger">
+
+                            ₹ <%= booking.totalPrice.toLocaleString("en-IN") %>
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <% }) %>
+
+</div>
+
+<% } %>
+
+</div>
+
+<script>
+
+const ctx = document.getElementById("bookingChart");
+
+new Chart(ctx, {
+    type: "doughnut",
+
+    data: {
+        labels: [
+            "Pending",
+            "Confirmed",
+            "Cancelled"
+        ],
+
+        datasets: [{
+            data: [
+                <%= pendingBookings %>,
+                <%= confirmedBookings %>,
+                <%= cancelledBookings %>
+            ],
+
+            backgroundColor: [
+                "#fbbf24",
+                "#22c55e",
+                "#ef4444"
+            ],
+
+            borderWidth: 0
+        }]
+    },
+
+    options: {
+        responsive: true,
+
+        plugins: {
+            legend: {
+                position: "bottom"
+            }
+        }
+    }
+});
+
+</script>

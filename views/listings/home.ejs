@@ -1,0 +1,727 @@
+<% layout("/layouts/boilerplate") %>
+
+<!-- Hero Section -->
+
+<section class="hero-section">
+
+    <div class="hero-overlay">
+
+        <h1>Find Your Dream Stay</h1>
+
+        <p>Discover beautiful hotels, villas, apartments and unique places around the world.</p>
+
+        <form action="/listings" method="GET" class="hero-search">
+
+            <input
+                type="text"
+                name="search"
+                placeholder="Where do you want to go?">
+
+            <button>
+                <i class="fa-solid fa-magnifying-glass"></i>
+            </button>
+
+        </form>
+
+    </div>
+
+</section>
+
+<div class="container mt-5">
+
+    <h2 class="fw-bold mb-4">
+        ⭐ Featured Stays
+    </h2>
+
+    <div class="row">
+
+        <% featuredListings.forEach(listing=>{ %>
+
+            <div class="col-lg-4 mb-4">
+
+                <a href="/listings/<%= listing._id %>" class="listing-link">
+
+                    <div class="card h-100">
+
+                        <img
+                            src="<%= listing.image.url %>"
+                            class="card-img-top">
+
+                            <span class="badge bg-warning text-dark position-absolute top-0 start-0 m-3 px-3 py-2">
+    NEW
+</span>
+
+                        <div class="card-body p-3">
+
+                            <h5>
+                                <%= listing.title %>
+                            </h5>
+
+                            <p class="text-muted">
+                                <%= listing.location %>
+                            </p>
+
+                            <h6 class="text-danger">
+                                ₹<%= listing.price.toLocaleString("en-IN") %>/night
+                            </h6>
+
+                        </div>
+
+                    </div>
+
+                </a>
+
+            </div>
+
+        <% }) %>
+
+    </div>
+
+    <!-- Trending Destinations -->
+
+<section class="container my-5">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div>
+
+            <h2 class="fw-bold">
+                🔥 Trending Destinations
+            </h2>
+
+            <p class="text-muted">
+                Most searched places by travellers.
+            </p>
+
+        </div>
+
+    </div>
+
+    <div class="row g-4">
+
+        <div class="col-lg-3 col-md-6">
+
+            <div class="trend-card">
+
+                <img src="https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?w=900" alt="Goa">
+
+                <div class="trend-overlay">
+
+                    <h4>Goa</h4>
+
+                    <span>120+ Stays</span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-lg-3 col-md-6">
+
+            <div class="trend-card">
+
+                <img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=900" alt="Manali">
+
+                <div class="trend-overlay">
+
+                    <h4>Manali</h4>
+
+                    <span>80+ Stays</span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-lg-3 col-md-6">
+
+            <div class="trend-card">
+
+                <img src="https://images.unsplash.com/photo-1519046904884-53103b34b206?w=900" alt="Bali">
+
+                <div class="trend-overlay">
+
+                    <h4>Bali</h4>
+
+                    <span>95+ Stays</span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-lg-3 col-md-6">
+
+            <div class="trend-card">
+
+                <img src="https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=900" alt="Switzerland">
+
+                <div class="trend-overlay">
+
+                    <h4>Switzerland</h4>
+
+                    <span>65+ Stays</span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+    <div class="container mt-5 mb-5">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <h2 class="fw-bold">
+            🌍 Explore All Destinations
+        </h2>
+
+        <a href="/listings" class="btn btn-outline-dark rounded-pill">
+            View All
+        </a>
+
+    </div>
+
+    <!-- Recently Added -->
+
+<section class="container my-5">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <h2 class="fw-bold">
+            🆕 Recently Added
+        </h2>
+
+        <a href="/listings" class="btn btn-outline-dark rounded-pill">
+            View All
+        </a>
+
+    </div>
+
+    <div class="row">
+
+        <% recentListings.forEach(listing=>{ %>
+
+            <div class="col-lg-4 col-md-6 mb-4">
+
+                <a href="/listings/<%= listing._id %>" class="listing-link">
+
+                    <div class="card premium-card h-100">
+
+                        <div class="position-relative">
+
+                            <img
+                                src="<%= listing.image.url %>"
+                                class="card-img-top">
+
+                            <span
+                                class="badge bg-success position-absolute top-0 start-0 m-3 px-3 py-2 rounded-pill">
+
+                                NEW
+
+                            </span>
+
+                        </div>
+
+                        <div class="card-body p-3">
+
+                            <h5 class="fw-bold">
+                                <%= listing.title %>
+                            </h5>
+
+                            <p class="text-muted">
+
+                                <i class="fa-solid fa-location-dot text-danger"></i>
+
+                                <%= listing.location %>,
+                                <%= listing.country %>
+
+                            </p>
+
+                            <div class="d-flex justify-content-between align-items-center">
+
+                                <h6 class="text-danger mb-0">
+
+                                    ₹<%= listing.price.toLocaleString("en-IN") %>/night
+
+                                </h6>
+
+                                <span class="badge bg-warning text-dark">
+
+                                    ⭐ New
+
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </a>
+
+            </div>
+
+        <% }) %>
+
+    </div>
+
+</section>
+
+
+<section class="container my-5">
+
+    <h2 class="fw-bold mb-4">
+        ⭐ Top Rated Stays
+    </h2>
+
+    <div class="row">
+
+        <% topRated.forEach(listing=>{ %>
+
+            <div class="col-lg-4 mb-4">
+
+                <a href="/listings/<%= listing._id %>" class="listing-link">
+
+                    <div class="card premium-card">
+
+                        <img
+                            src="<%= listing.image.url %>"
+                            class="card-img-top">
+
+                        <div class="card-body p-3">
+
+                            <h5><%= listing.title %></h5>
+
+                            <p class="text-muted">
+
+                                <i class="fa-solid fa-location-dot text-danger"></i>
+
+                                <%= listing.location %>,
+                                <%= listing.country %>
+
+                            </p>
+
+                            <div class="d-flex justify-content-between">
+
+                                <strong class="text-danger">
+                                    ₹<%= listing.price.toLocaleString("en-IN") %>/night
+                                </strong>
+
+                                <span class="badge bg-warning text-dark">
+
+                                    ⭐ <%= listing.avgRating %>
+
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </a>
+
+            </div>
+
+        <% }) %>
+
+    </div>
+
+</section>
+
+
+    <div class="row">
+
+        <% allListings.slice(0,6).forEach(listing=>{ %>
+
+            <div class="col-lg-4 col-md-6 mb-4">
+
+                <a href="/listings/<%= listing._id %>" class="listing-link">
+
+                    <div class="card premium-card">
+
+                        <img
+                            src="<%= listing.image.url %>"
+                            class="card-img-top">
+
+                        <div class="card-body">
+
+                            <h5 class="fw-bold">
+                                <%= listing.title %>
+                            </h5>
+
+                            <p class="text-muted mb-2">
+                                <i class="fa-solid fa-location-dot text-danger"></i>
+                                <%= listing.location %>,
+                                <%= listing.country %>
+                            </p>
+
+                            <div class="d-flex justify-content-between align-items-center">
+
+                                <h6 class="text-danger mb-0">
+                                    ₹<%= listing.price.toLocaleString("en-IN") %>/night
+                                </h6>
+
+                                <span class="badge bg-warning text-dark">
+                                    ★ 4.8
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </a>
+
+            </div>
+
+        <% }) %>
+
+    </div>
+
+</div>
+
+
+<!-- Why Choose Us -->
+
+<section class="why-us py-5">
+
+    <div class="container">
+
+        <div class="text-center mb-5">
+
+            <h2 class="fw-bold">
+                Why Choose Dream Diaries?
+            </h2>
+
+            <p class="text-muted">
+                Your perfect travel companion with premium stays and unforgettable experiences.
+            </p>
+
+        </div>
+
+        <div class="row text-center">
+
+            <div class="col-lg-3 col-md-6 mb-4">
+
+                <div class="feature-box">
+
+                    <i class="fa-solid fa-house fa-3x text-danger mb-3"></i>
+
+                    <h5>Verified Homes</h5>
+
+                    <p class="text-muted">
+                        Every property is verified for quality and safety.
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="col-lg-3 col-md-6 mb-4">
+
+                <div class="feature-box">
+
+                    <i class="fa-solid fa-credit-card fa-3x text-danger mb-3"></i>
+
+                    <h5>Secure Booking</h5>
+
+                    <p class="text-muted">
+                        Safe and secure booking process with instant confirmation.
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="col-lg-3 col-md-6 mb-4">
+
+                <div class="feature-box">
+
+                    <i class="fa-solid fa-star fa-3x text-danger mb-3"></i>
+
+                    <h5>Top Rated</h5>
+
+                    <p class="text-muted">
+                        Discover highly rated stays loved by travelers.
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="col-lg-3 col-md-6 mb-4">
+
+                <div class="feature-box">
+
+                    <i class="fa-solid fa-headset fa-3x text-danger mb-3"></i>
+
+                    <h5>24×7 Support</h5>
+
+                    <p class="text-muted">
+                        Our team is always available to help you.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- Statistics -->
+
+<section class="stats-section py-5">
+
+    <div class="container">
+
+        <div class="row text-center">
+
+            <div class="col-lg-3 col-md-6 mb-4">
+
+                <div class="stat-card">
+
+                    <i class="fa-solid fa-users"></i>
+
+                    <h2>12K+</h2>
+
+                    <p>Happy Travelers</p>
+
+                </div>
+
+            </div>
+
+            <div class="col-lg-3 col-md-6 mb-4">
+
+                <div class="stat-card">
+
+                    <i class="fa-solid fa-hotel"></i>
+
+                    <h2>850+</h2>
+
+                    <p>Luxury Stays</p>
+
+                </div>
+
+            </div>
+
+            <div class="col-lg-3 col-md-6 mb-4">
+
+                <div class="stat-card">
+
+                    <i class="fa-solid fa-earth-asia"></i>
+
+                    <h2>75+</h2>
+
+                    <p>Destinations</p>
+
+                </div>
+
+            </div>
+
+            <div class="col-lg-3 col-md-6 mb-4">
+
+                <div class="stat-card">
+
+                    <i class="fa-solid fa-star"></i>
+
+                    <h2>4.9★</h2>
+
+                    <p>Average Rating</p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- Testimonials -->
+
+<section class="testimonials py-5">
+
+    <div class="container">
+
+        <div class="text-center mb-5">
+
+            <h2 class="fw-bold">
+                ❤️ What Our Guests Say
+            </h2>
+
+            <p class="text-muted">
+                Thousands of travelers love Dream Diaries.
+            </p>
+
+        </div>
+
+        <div class="row">
+
+            <div class="col-lg-4 mb-4">
+
+                <div class="testimonial-card">
+
+                    <div class="stars">
+
+                        ★★★★★
+
+                    </div>
+
+                    <p>
+
+                        "Amazing experience! The stay was beautiful and exactly as shown."
+
+                    </p>
+
+                    <div class="d-flex align-items-center">
+
+                        <img
+                        src="https://randomuser.me/api/portraits/men/32.jpg"
+                        class="user-img">
+
+                        <div>
+
+                            <h6 class="mb-0">Rahul Sharma</h6>
+
+                            <small class="text-muted">
+                                India
+                            </small>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="col-lg-4 mb-4">
+
+                <div class="testimonial-card">
+
+                    <div class="stars">
+
+                        ★★★★★
+
+                    </div>
+
+                    <p>
+
+                        "Booking was quick and the support team was fantastic."
+
+                    </p>
+
+                    <div class="d-flex align-items-center">
+
+                        <img
+                        src="https://randomuser.me/api/portraits/women/45.jpg"
+                        class="user-img">
+
+                        <div>
+
+                            <h6 class="mb-0">Sophia Lee</h6>
+
+                            <small class="text-muted">
+                                Singapore
+                            </small>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="col-lg-4 mb-4">
+
+                <div class="testimonial-card">
+
+                    <div class="stars">
+
+                        ★★★★★
+
+                    </div>
+
+                    <p>
+
+                        "One of the best travel websites I've ever used."
+
+                    </p>
+
+                    <div class="d-flex align-items-center">
+
+                        <img
+                        src="https://randomuser.me/api/portraits/men/75.jpg"
+                        class="user-img">
+
+                        <div>
+
+                            <h6 class="mb-0">Daniel Wilson</h6>
+
+                            <small class="text-muted">
+                                Canada
+                            </small>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- Newsletter -->
+
+<section class="newsletter-section py-5">
+
+    <div class="container">
+
+        <div class="newsletter-box text-center">
+
+            <h2 class="fw-bold mb-3">
+                ✈️ Get Exclusive Travel Deals
+            </h2>
+
+            <p class="text-muted mb-4">
+                Subscribe to receive exclusive offers, travel inspiration and the latest Dream Diaries updates.
+            </p>
+
+            <form class="newsletter-form">
+
+                <input
+                    type="email"
+                    placeholder="Enter your email"
+                    required>
+
+                <button type="submit">
+                    Subscribe
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</section>

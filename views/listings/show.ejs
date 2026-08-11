@@ -1,50 +1,998 @@
-<% layout("/layouts/boilerplate") -%>
-    <div class="row mt-3">
-        <div class="col-8 offset-3">
-    <h3><%= listing.title %> </h3>
-    </div>
-    <div class="card col-6 offset-3 border-0">
-        <img src="<%= listing.image.url %>" class="card-img-top show-img" alt="listing-image">
-    <div class="card-body">
-    <p class="card-text">
-        
-        <%= listing.description %> <br>
-        &#8377;<%= Number(listing.price || 0).toLocaleString("en-IN") %>/Night
-        <%= listing.location %><br>
-        <%= listing.country %><br>
-    </p>
+<% layout('/layouts/boilerplate') -%>
 
-  </div>
-    </div>
-    
-    
-    <div class="btns mt-3">
-        <a href="/listings/<%= listing._id %>/edit" class="btn btn-dark col-1 offset-3 ">Edit</a>
-        <form method="POST" action="/listings/<%= listing._id%>?_method=DELETE">
-        <button class="btn btn-dark offset-3 edit-btn">Delete </button>
-    </form> 
-    </div>
-    <div class="col-8 offset-3 mb-3">
-        <hr/>
-        <h4>
-            Review Page
-        </h4>
-        <form class="">
-           <div class="mb-3 mt-3">
-            <label for="rating" class="form-label ">Rating</label>
-            <input type="range" max="5" id="rating"
-             class="form-range"
-            name="review[rating]" >
-           </div> 
-           <div class="mb-3 mt-3">
-            <label for="comment" class="form-label">Comments</label>
-            <textarea name="review[comment]"
-             id="comment" cols="30" 
-             rows="5" 
-             class="form-control"></textarea>
-           </div>
-           <button class="btn btn-outline-dark">Submit</button>
-        </form>
-    </div>
-    </div> 
+<div class="container mt-4 show-container">
 
+
+<!-- HEADER -->
+<div class="d-flex justify-content-between align-items-start mb-4">
+
+    <div>
+        <h2 class="fw-bold mb-1"><%= listing.title %></h2>
+
+        <p class="text-muted mb-0">
+            ⭐ <%= averageRating %>
+            (<%= reviewCount %> Reviews)
+            &nbsp; | &nbsp;
+            📍 <%= listing.location %>, <%= listing.country %>
+        </p>
+    </div>
+
+    <% if(currUser){ %>
+    <form action="/listings/<%= listing._id %>/wishlist" method="POST">
+        <button class="btn btn-light rounded-circle shadow-sm">
+            <% if(isWishlisted){ %>
+                <i class="fa-solid fa-heart text-danger fs-5"></i>
+            <% } else { %>
+                <i class="fa-regular fa-heart fs-5"></i>
+            <% } %>
+        </button>
+    </form>
+    <% } %>
+
+</div>
+
+
+<!-- Premium Hero Gallery -->
+
+<div class="hero-gallery mb-5">
+
+    <!-- Left Big Image -->
+    <div class="hero-main">
+
+        <img
+            src="<%= listing.images && listing.images.length ? listing.images[0].url : listing.image.url %>"
+            alt="<%= listing.title %>">
+
+    </div>
+
+    <!-- Right Images -->
+
+    <div class="hero-side">
+
+        <% if(listing.images && listing.images.length > 1){ %>
+
+            <% listing.images.slice(1,5).forEach(img=>{ %>
+
+                
+                <img
+                    src="<%= img.url %>"
+                    alt="Listing">
+
+            <% }) %>
+
+        <% } else { %>
+
+            <% for(let i=0;i<4;i++){ %>
+
+                <img
+                    src="<%= listing.image.url %>"
+                    alt="Listing">
+
+            <% } %>
+
+        <% } %>
+
+    </div>
+
+</div>
+
+<!-- OWNER BUTTONS -->
+
+
+<!-- MAIN CONTENT -->
+<div class="row g-4">
+
+    <!-- LEFT -->
+    <div class="col-lg-8">
+
+        <!-- ABOUT -->
+        <div class="card shadow-sm border-0 rounded-4 mb-4">
+
+            <div class="card-body p-4">
+
+                <h4 class="fw-bold mb-4">About this Stay</h4>
+
+                <div class="row text-center mb-4 g-3">
+
+                    <div class="col-6 col-md-3">
+                        <i class="fa-solid fa-users fs-3 text-danger"></i>
+                        <p class="mt-2 mb-0 fw-semibold">6 Guests</p>
+                    </div>
+
+                    <div class="col-6 col-md-3">
+                        <i class="fa-solid fa-bed fs-3 text-danger"></i>
+                        <p class="mt-2 mb-0 fw-semibold">3 Bedrooms</p>
+                    </div>
+
+                    <div class="col-6 col-md-3">
+                        <i class="fa-solid fa-bed fs-3 text-danger"></i>
+                        <p class="mt-2 mb-0 fw-semibold">3 Beds</p>
+                    </div>
+
+                    <div class="col-6 col-md-3">
+                        <i class="fa-solid fa-bath fs-3 text-danger"></i>
+                        <p class="mt-2 mb-0 fw-semibold">2 Bathrooms</p>
+                    </div>
+
+                </div>
+
+                <p class="text-muted fs-6 lh-lg">
+                    <%= listing.description %>
+                </p>
+
+                <hr class="my-4">
+
+                <h5 class="fw-bold mb-3">Amenities</h5>
+
+                <div class="row text-center g-3">
+
+                    <div class="col-6 col-md-3">
+                        <i class="fa-solid fa-wifi fs-3 text-danger"></i>
+                        <p class="mt-2 mb-0">Wifi</p>
+                    </div>
+
+                    <div class="col-6 col-md-3">
+                        <i class="fa-solid fa-utensils fs-3 text-danger"></i>
+                        <p class="mt-2 mb-0">Kitchen</p>
+                    </div>
+
+                    <div class="col-6 col-md-3">
+                        <i class="fa-solid fa-car fs-3 text-danger"></i>
+                        <p class="mt-2 mb-0">Parking</p>
+                    </div>
+
+                    <div class="col-6 col-md-3">
+                        <i class="fa-solid fa-tv fs-3 text-danger"></i>
+                        <p class="mt-2 mb-0">Smart TV</p>
+                    </div>
+
+                </div>
+
+                
+            </div>
+
+        </div>
+
+
+        <div class="d-flex gap-2 mb-4">
+
+    <a
+        href="/listings/<%= listing._id %>/edit"
+        class="btn btn-dark px-4">
+        Edit
+    </a>
+
+    <form
+        method="POST"
+        action="/listings/<%= listing._id %>?_method=DELETE">
+
+        <button class="btn btn-danger px-4">
+            Delete
+        </button>
+
+    </form>
+
+</div>
+
+
+
+        <!-- MAP -->
+        <div class="card shadow-sm border-0 rounded-4 mb-4">
+
+            <div class="card-body p-4">
+
+                <h4 class="fw-bold mb-3">Location</h4>
+
+                <div id="map"></div>
+
+            </div>
+
+        </div>
+
+        <!-- HOST -->
+        <div class="card shadow-sm border-0 rounded-4 mb-4">
+
+            <div class="card-body p-4">
+
+                <h4 class="fw-bold mb-4">Host</h4>
+
+                <div class="d-flex align-items-center">
+
+                    <img
+                        src="https://i.pravatar.cc/100"
+                        class="rounded-circle"
+                        width="70"
+                        height="70"
+                        alt="Host avatar">
+
+                    <div class="ms-3">
+
+                        <h5 class="mb-1">
+                            <%= listing.owner ? listing.owner.username : 'Dream Diaries Host' %>
+                        </h5>
+
+                        <p class="text-muted mb-1">Superhost</p>
+
+                        <p class="text-muted mb-0">Dream Diaries Host</p>
+
+                    </div>
+
+                </div>
+
+                <button class="btn btn-outline-danger mt-4">
+                    View Profile
+                </button>
+
+
+                <hr>
+
+<div class="row text-center mt-4">
+
+    <div class="col-4">
+
+        <h5 class="fw-bold">4.9</h5>
+
+        <small class="text-muted">
+            Rating
+        </small>
+
+    </div>
+
+    <div class="col-4">
+
+        <h5 class="fw-bold">58</h5>
+
+        <small class="text-muted">
+            Reviews
+        </small>
+
+    </div>
+
+    <div class="col-4">
+
+        <h5 class="fw-bold">2 Years</h5>
+
+        <small class="text-muted">
+            Hosting
+        </small>
+
+    </div>
+
+</div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- RIGHT / BOOKING -->
+    <div class="col-lg-4">
+
+        <div class="card shadow border-0 rounded-4 sticky-top booking-card">
+
+            <div class="card-body p-4">
+
+                <div class="d-flex justify-content-between align-items-end mb-4">
+
+                    <h3 class="fw-bold mb-0">
+                        ₹ <%= Number(listing.price).toLocaleString('en-IN') %>
+                    </h3>
+
+                    <span class="text-muted">/night</span>
+
+                </div>
+
+                <form
+    id="bookingForm"
+    action="/bookings/<%= listing._id %>/book"
+    method="POST">
+
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Check In</label>
+                        <input
+                            type="date"
+                            id="checkIn"
+                            class="form-control"
+                            name="checkIn"
+                            autocomplete="off"
+                            required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Check Out</label>
+                        <input
+                            type="date"
+                            id="checkOut"
+                            class="form-control"
+                            name="checkOut"
+                            autocomplete="off"
+                            required>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label fw-semibold">Guests</label>
+                        <input
+                            type="number"
+                            class="form-control"
+                            name="guests"
+                            value="1"
+                            min="1">
+                    </div>
+
+                    <hr>
+                    <script>
+
+const bookedDates = <%- JSON.stringify(bookedDates) %>;
+
+const checkIn = document.getElementById("checkIn");
+const checkOut = document.getElementById("checkOut");
+
+// Today se pehle date select nahi hogi
+const today = new Date().toISOString().split("T")[0];
+checkIn.min = today;
+checkOut.min = today;
+
+// Check In change hone par
+checkIn.addEventListener("change", () => {
+
+    checkOut.min = checkIn.value;
+
+    const selected = new Date(checkIn.value);
+
+    for (let booking of bookedDates) {
+
+        const start = new Date(booking.checkIn);
+        const end = new Date(booking.checkOut);
+
+        if (selected >= start && selected < end) {
+
+            alert("This date is already booked.");
+
+            checkIn.value = "";
+
+            return;
+        }
+    }
+});
+
+// Check Out change hone par
+checkOut.addEventListener("change", () => {
+
+    const selected = new Date(checkOut.value);
+
+    for (let booking of bookedDates) {
+
+        const start = new Date(booking.checkIn);
+        const end = new Date(booking.checkOut);
+
+        if (selected > start && selected <= end) {
+
+            alert("This date is already booked.");
+
+            checkOut.value = "";
+
+            return;
+        }
+    }
+});
+
+</script>
+
+<div class="d-flex justify-content-between mb-2">
+    <span>Total Nights</span>
+    <strong id="totalNights">0</strong>
+</div>
+
+<div class="d-flex justify-content-between mb-3">
+    <span>Total Price</span>
+    <strong>
+        ₹ <span id="totalPrice">0</span>
+    </strong>
+</div>
+
+        <button
+    type="button"
+    id="payBtn"
+    class="btn btn-danger w-100 py-2 fw-semibold">
+
+    Reserve
+
+</button>
+
+
+                    <p class="text-center text-muted mt-3 mb-0">
+    You won't be charged yet
+</p>
+
+                </form>
+
+                <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+
+                <!-- Razorpay -->
+        <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+                <script>
+
+const bookingForm = document.getElementById("bookingForm");
+const payBtn = document.getElementById("payBtn");
+
+payBtn.addEventListener("click", async function (e) {
+
+    e.preventDefault();
+
+    if (!bookingForm.checkValidity()) {
+        bookingForm.reportValidity();
+        return;
+    }
+
+    const formData = new URLSearchParams(
+        new FormData(bookingForm)
+    );
+
+    try {
+
+        const response = await fetch(
+            "/bookings/<%= listing._id %>/create-order",
+            {
+                method: "POST",
+
+                headers: {
+                    "Content-Type":
+                        "application/x-www-form-urlencoded",
+                },
+
+                body: formData,
+            }
+        );
+
+        const data = await response.json();
+
+        console.log("CREATE ORDER RESPONSE =", data);
+
+        if (!response.ok || !data.success) {
+
+            alert(
+                data.message ||
+                "Unable to create payment order."
+            );
+
+            return;
+        }
+
+        const options = {
+
+            key: "<%= razorpayKey %>",
+
+            amount: data.order.amount,
+
+            currency: data.order.currency,
+
+            name: "DreamDiaries",
+
+            description: "Booking Payment",
+
+            order_id: data.order.id,
+
+            handler: function (response) {
+
+                const paymentInput =
+                    document.createElement("input");
+
+                paymentInput.type = "hidden";
+                paymentInput.name =
+                    "razorpay_payment_id";
+
+                paymentInput.value =
+                    response.razorpay_payment_id;
+
+                bookingForm.appendChild(paymentInput);
+
+
+                const orderInput =
+                    document.createElement("input");
+
+                orderInput.type = "hidden";
+                orderInput.name =
+                    "razorpay_order_id";
+
+                orderInput.value =
+                    response.razorpay_order_id;
+
+                bookingForm.appendChild(orderInput);
+
+
+                const signatureInput =
+                    document.createElement("input");
+
+                signatureInput.type = "hidden";
+                signatureInput.name =
+                    "razorpay_signature";
+
+                signatureInput.value =
+                    response.razorpay_signature;
+
+                bookingForm.appendChild(signatureInput);
+
+
+                bookingForm.submit();
+
+            },
+
+            theme: {
+                color: "#dc3545",
+            }
+
+        };
+
+
+        const rzp = new Razorpay(options);
+
+        rzp.open();
+
+
+    } catch (error) {
+
+        console.error(
+            "PAYMENT ERROR =",
+            error
+        );
+
+        alert(
+            "Something went wrong while starting payment."
+        );
+
+    }
+
+});
+
+</script>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div class="card shadow-sm border-0 rounded-4 mb-4">
+
+    <div class="card-body p-4">
+
+        <div class="row text-center">
+
+            <div class="col-md-4">
+
+                <h2 class="fw-bold text-warning">
+                    ⭐ <%= averageRating %>
+                </h2>
+
+                <p class="text-muted mb-0">
+                    Average Rating
+                </p>
+
+            </div>
+
+            <div class="col-md-4">
+
+                <h2 class="fw-bold text-primary">
+                    <%= reviewCount %>
+                </h2>
+
+                <p class="text-muted mb-0">
+                    Total Reviews
+                </p>
+
+            </div>
+
+            <div class="col-md-4">
+
+                <h2 class="fw-bold text-success">
+                    <%= listing.bookings.length %>
+                </h2>
+
+                <p class="text-muted mb-0">
+                    Bookings
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<div class="card shadow-sm p-4 rounded-4">
+
+    <h3 class="fw-bold mb-4">
+        Rating Distribution
+    </h3>
+
+    <div style="position: relative; height: 300px; width: 100%;">
+    <canvas id="ratingChart"></canvas>
+</div>
+
+    
+
+</div>
+
+<!-- REVIEWS -->
+<h3 class="mt-5 mb-4 fw-bold">All Reviews</h3>
+
+<div class="row g-4">
+
+    <% for(let review of listing.reviews){ %>
+
+    <div class="col-md-6 col-lg-4">
+
+        <div class="card shadow-sm border-0 rounded-4 h-100">
+
+            <div class="card-body p-4 d-flex flex-column">
+
+                <div class="d-flex align-items-center mb-3">
+
+                    <div class="rounded-circle bg-danger text-white d-flex align-items-center justify-content-center me-3"
+                         style="width:48px;height:48px;">
+                        <i class="fa-solid fa-user"></i>
+                    </div>
+
+                    <div>
+                        <h6 class="mb-0 fw-semibold">
+                            <%= review.author ? review.author.username : 'Guest' %>
+                        </h6>
+                        <small class="text-muted">
+                            <%= review.createdAt.toDateString() %>
+                        </small>
+                    </div>
+
+                </div>
+
+                <div class="mb-3">
+
+                    <% for(let i=1;i<=5;i++){ %>
+
+                        <% if(i<=review.rating){ %>
+                            <i class="fa-solid fa-star text-warning"></i>
+                        <% } else { %>
+                            <i class="fa-regular fa-star text-warning"></i>
+                        <% } %>
+
+                    <% } %>
+
+                </div>
+
+                <p class="text-muted flex-grow-1 mb-3">
+                    <%= review.comment %>
+                </p>
+
+                <% if(currUser && review.author && currUser._id.equals(review.author._id)){ %>
+
+                <form
+                    action="/listings/<%= listing._id %>/reviews/<%= review._id %>?_method=DELETE"
+                    method="POST">
+
+                    <button class="btn btn-sm btn-outline-danger w-100">
+                        Delete Review
+                    </button>
+
+                </form>
+
+                <% } %>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <% } %>
+
+    <% if (currUser) { %>
+
+<div class="mt-5">
+
+    <h4 class="fw-bold mb-3">
+        ⭐ Leave a Review
+    </h4>
+
+    <form
+        action="/listings/<%= listing._id %>/reviews"
+        method="POST">
+
+        <!-- Rating -->
+        <div class="mb-3">
+
+            <label class="form-label fw-semibold">
+                Rating
+            </label>
+
+            <select
+                name="review[rating]"
+                class="form-select"
+                required>
+
+                <option value="">Select Rating</option>
+                <option value="5">⭐⭐⭐⭐⭐ - Excellent</option>
+                <option value="4">⭐⭐⭐⭐ - Very Good</option>
+                <option value="3">⭐⭐⭐ - Good</option>
+                <option value="2">⭐⭐ - Average</option>
+                <option value="1">⭐ - Poor</option>
+
+            </select>
+
+        </div>
+
+        <!-- Comment -->
+        <div class="mb-3">
+
+            <label class="form-label fw-semibold">
+                Your Review
+            </label>
+
+            <textarea
+                name="review[comment]"
+                class="form-control"
+                rows="4"
+                placeholder="Share your experience..."
+                required></textarea>
+
+        </div>
+
+        <button
+            type="submit"
+            class="btn btn-dark">
+
+            <i class="fa-solid fa-star"></i>
+            Submit Review
+
+        </button>
+
+    </form>
+
+</div>
+
+<% } else { %>
+
+<div class="alert alert-info mt-4">
+
+    Please
+    <a href="/login">
+        login
+    </a>
+    to write a review.
+
+</div>
+
+<% } %>
+
+</div>
+
+
+</div>
+
+<script>
+const coordinates = <%- JSON.stringify(
+    listing.geometry
+        ? listing.geometry.coordinates
+        : [77.2090, 28.6139]
+) %>;
+
+const listingTitle = "<%= listing.title %>";
+
+
+</script>
+
+<script src="/js/map.js"></script>
+
+
+<script>
+
+
+const today = new Date().toISOString().split("T")[0];
+
+checkIn.min = today;
+checkOut.min = today;
+
+const nights = document.getElementById("totalNights");
+const total = document.getElementById("totalPrice");
+
+const pricePerNight = <%= listing.price %>;
+
+function updatePrice() {
+
+    if (!checkIn.value || !checkOut.value) {
+        nights.innerText = 0;
+        total.innerText = 0;
+        return;
+    }
+
+    const inDate = new Date(checkIn.value);
+    const outDate = new Date(checkOut.value);
+
+    const diff = (outDate - inDate) / (1000 * 60 * 60 * 24);
+
+    if (diff > 0) {
+        nights.innerText = diff;
+        total.innerText = (diff * pricePerNight).toLocaleString("en-IN");
+    } else {
+        nights.innerText = 0;
+        total.innerText = 0;
+    }
+}
+
+checkIn.addEventListener("change", () => {
+
+    checkOut.min = checkIn.value;
+
+    if (checkOut.value && checkOut.value < checkIn.value) {
+        checkOut.value = "";
+    }
+
+    updatePrice();
+});
+
+
+
+checkIn.addEventListener("change", updatePrice);
+checkOut.addEventListener("change", updatePrice);
+
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+
+const ratingCtx = document.getElementById("ratingChart");
+
+new Chart(ratingCtx, {
+
+    type: "bar",
+
+    data: {
+
+        labels: [
+            "5★",
+            "4★",
+            "3★",
+            "2★",
+            "1★"
+        ],
+
+        datasets: [{
+
+            label: "Reviews",
+
+            data: [
+                <%= ratingStats[5] %>,
+                <%= ratingStats[4] %>,
+                <%= ratingStats[3] %>,
+                <%= ratingStats[2] %>,
+                <%= ratingStats[1] %>
+            ],
+
+            backgroundColor: [
+                "#22c55e",
+                "#84cc16",
+                "#facc15",
+                "#fb923c",
+                "#ef4444"
+            ],
+
+            borderRadius: 8
+
+        }]
+
+    },
+
+    options: {
+
+        responsive: true,
+
+        maintainAspectRatio: false,
+
+        plugins: {
+
+            legend: {
+                display: false
+            }
+
+        },
+
+        scales: {
+
+            y: {
+
+                beginAtZero: true,
+
+                ticks: {
+                    precision: 0
+                }
+
+            }
+
+        }
+
+    }
+
+});
+
+</script>
+
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+<script>
+const bookingForm = document.getElementById("bookingForm");
+
+bookingForm.addEventListener("submit", async (e) => {
+
+    e.preventDefault();
+
+    const formData = new URLSearchParams(new FormData(bookingForm));
+
+const response = await fetch(
+    "/bookings/<%= listing._id %>/create-order",
+    {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: formData,
+    }
+);
+
+    const data = await response.json();
+
+    const options = {
+
+    key: "<%= razorpayKey %>",
+
+    amount: data.order.amount,
+
+    currency: data.order.currency,
+
+    name: "DreamDiaries",
+
+    description: "Booking Payment",
+
+    order_id: data.order.id,
+
+    handler: function (response) {
+
+    const paymentInput = document.createElement("input");
+    paymentInput.type = "hidden";
+    paymentInput.name = "razorpay_payment_id";
+    paymentInput.value = response.razorpay_payment_id;
+    bookingForm.appendChild(paymentInput);
+
+    const orderInput = document.createElement("input");
+    orderInput.type = "hidden";
+    orderInput.name = "razorpay_order_id";
+    orderInput.value = response.razorpay_order_id;
+    bookingForm.appendChild(orderInput);
+
+    const signatureInput = document.createElement("input");
+    signatureInput.type = "hidden";
+    signatureInput.name = "razorpay_signature";
+    signatureInput.value = response.razorpay_signature;
+    bookingForm.appendChild(signatureInput);
+
+    bookingForm.submit();
+},
+
+    theme: {
+        color: "#dc3545",
+    },
+};
+    
+
+    const rzp = new Razorpay(options);
+
+    rzp.open();
+
+});
+</script>

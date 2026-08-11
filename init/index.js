@@ -1,8 +1,12 @@
+require("dotenv").config();
+
 const mongoose = require("mongoose");
 const initdata = require("./data.js");
 const Listing = require("../models/listing.js");
 
-const MONGO_URL = "mongodb://127.0.0.1:27017/Dream-Diaries";
+const MONGO_URL = process.env.MONGO_URL;
+
+
 
 main()
 .then(() => {
@@ -18,7 +22,12 @@ async function main() {
 
 const initDB = async () => {
     await Listing.deleteMany({});
-    await Listing.insertMany(initdata.data);
+        const listings = initdata.data.map((obj) => ({
+        ...obj,
+        owner: "6a520f92eb18aa2953a12550", 
+    }));
+
+    await Listing.insertMany(listings);
     console.log("Data was initialized");
 }
 

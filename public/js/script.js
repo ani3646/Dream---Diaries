@@ -17,3 +17,25 @@
     }, false)
   })
 })()
+
+const filters = document.querySelector(".filters");
+const leftBtn = document.querySelector(".left-btn");
+const rightBtn = document.querySelector(".right-btn");
+
+if (filters && leftBtn && rightBtn) {
+
+    rightBtn.addEventListener("click", () => {
+        filters.scrollBy({
+            left: 250,
+            behavior: "smooth",
+        });
+    });
+
+    leftBtn.addEventListener("click", () => {
+        filters.scrollBy({
+            left: -250,
+            behavior: "smooth",
+        });
+    });
+
+}
