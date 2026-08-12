@@ -268,17 +268,19 @@ app.all("/*splat", (req, res, next) => {
 // Global Error Handler
 
 app.use((err, req, res, next) => {
+    console.error("========== ERROR ==========");
+    console.error(err);
+    console.error("===========================");
+
+    if (res.headersSent) {
+        return next(err);
+    }
 
     const { statusCode = 500 } = err;
-
-    if (!err.message) {
-        err.message = "Something Went Wrong";
-    }
 
     res.status(statusCode).render("error.ejs", {
         err,
     });
-
 });
 
 
