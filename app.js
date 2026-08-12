@@ -124,9 +124,7 @@ app.use("/host", hostRoutes);
 // app.use(express.static('public'));
 
 
-app.get("/", (req,res) => {
-    res.redirect("/listings");
-});
+
 
 
 const validateReview = (req, res, next) => {
@@ -249,6 +247,16 @@ res.redirect(`/listings/${id}`);
        
 );
 
+app.get("/", (req,res) => {
+    res.redirect("/listings");
+});
+
+
+app.get("/healthz", (req, res) => {
+    res.status(200).send("OK");
+});
+
+
 
 // 404 Route
 
@@ -276,6 +284,6 @@ app.use((err, req, res, next) => {
 
 
 
-app.listen(8080, () =>{
-    console.log("Server is listening Port ");
+app.listen(process.env.PORT || 8080, () => {
+    console.log(`Server is listening on port ${process.env.PORT || 8080}`);
 });
